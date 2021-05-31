@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    margin: auto;
+    width: 1000px;
+    padding: 1%;
+    .container__left {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        .container__search {
+            button {
+                margin: 5px;
+            }
+        }
+
+        .container__info {
+            :first-child {
+                display: flex;
+            }
+        }
+    }
+    .container__right {
+        display: flex;
+        flex-direction: column;
+        button {
+            margin: 5px;
+        }
+    }
+}

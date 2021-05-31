@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import SearchBlock from './components/SearchBlock';
+import WeatherInformation from './components/WeatherInformation';
+import FavoriteСities from './components/FavoriteСities';
+import requestOpenweathermap from './service/request';
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const [weatherInformation, setWeatherInformation] = useState(null);
+  const [currentCity, setCurrentCity] = useState(null);
+  const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
+
+  useEffect(() => {
+
+    requestOpenweathermap(setWeatherInformation, setCurrentCity, currentCity);
+
+  }, [currentCity, favoriteСities]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div className='container'>
+      <div className='container__left'>
+        <SearchBlock setCurrentCity={setCurrentCity} />
+        <WeatherInformation weatherInformation={weatherInformation} setFavoriteСities={setFavoriteСities}
+          favoriteСities={favoriteСities} />
+      </div>
+      <FavoriteСities favoriteСities={favoriteСities} setCurrentCity={setCurrentCity} />
+
     </div>
+
   );
-}
+
+};
 
 export default App;
