@@ -10,7 +10,6 @@ const App = () => {
   const [weatherInformation, setWeatherInformation] = useState(null);
   const [currentCity, setCurrentCity] = useState(null);
   const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
-
   useEffect(() => {
 
     requestOpenweathermap(setWeatherInformation, setCurrentCity, currentCity);

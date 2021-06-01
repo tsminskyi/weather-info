@@ -6,10 +6,13 @@ const FavoriteСities = (props) => {
 
     return (
         <div className='container__right'>
+            <div>Favorite Сities</div>
             {
                 favoriteСities.map((item) => (
 
-                    <button type='button' onClick={() => setCurrentCity(item.name)}>{item.name}</button>
+                    <button key={item.name} type='button'
+                        onClick={() => setCurrentCity(item.name)}>{item.name}
+                    </button>
 
                 ))
             }

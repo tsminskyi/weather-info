@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import mappingRequestData from '../service/mappingRequestData';
+import eventEditeFavorite from '../service/eventEditeFavorite';
+// import eventChangeUnits from '../service/eventChangeUnits';
+import UnitsBlock from './UnitsBlock';
 
 const WeatherInformation = (props) => {
 
@@ -7,14 +10,14 @@ const WeatherInformation = (props) => {
     if (weatherInformation == null) {
 
         return (
-            <div>
-                <p>We don`t know where you are.Please enter the city name in the search bar.</p>
-                <p>Possible reasons:</p>
-                <p>You have chosen not to provide your location data</p>
-                <p>There is a network problem or the location service cannot
+            <div className='container__info'>
+                <h1>We don`t know where you are.Please enter the city name in the search bar.</h1>
+                <h4>Possible reasons:</h4>
+                <h5>You have chosen not to provide your location data</h5>
+                <h5>There is a network problem or the location service cannot
                 be contacted for any other reason.
-                </p>
-                <p>Failed to determine the location within the specified time.</p>
+                </h5>
+                <h5>Failed to determine the location within the specified time.</h5>
             </div>
         );
 
@@ -22,60 +25,55 @@ const WeatherInformation = (props) => {
     if (weatherInformation.cod === '404') {
 
         return (
-            <div>
-                <p>{weatherInformation.cod}</p>
+            <div className='container__info'>
+                <h1>{weatherInformation.cod}</h1>
                 <p>{weatherInformation.message}</p>
             </div>
         );
 
     }
 
-    const editeFavorite = (value, favoriteIndex) => {
-
-        if (favoriteСities != null && favoriteСities.length > 0) {
-
-            // const index = favoriteСities.findIndex((el) => el.name === value);
-            if (favoriteIndex >= 0) {
-
-                const newList = favoriteСities.filter((el) => el.name !== value);
-                setFavoriteСities(newList);
-                localStorage.setItem('weather-info', JSON.stringify(newList));
-
-            } else {
-
-                const newList = favoriteСities.slice();
-                newList.push({ name: value });
-                setFavoriteСities(newList);
-                console.dir(newList);
-                localStorage.setItem('weather-info', JSON.stringify(newList));
-
-            }
-
-        } else {
-
-            const newList = new Array({ name: value });
-            setFavoriteСities(newList);
-            localStorage.setItem('weather-info', JSON.stringify(newList));
-
-        }
-
-    };
+    const [dataTemp, setDataTemp] = useState({
+        temp: weatherInformation.main.temp,
+        feelsLike: weatherInformation.main.feels_like,
+        units: ['K', 'C'],
+        currentValue: 'K'
+    });
     const data = mappingRequestData(weatherInformation, favoriteСities);
+    useEffect(() => {
+
+        setDataTemp({
+            temp: weatherInformation.main.temp,
+            feelsLike: weatherInformation.main.feels_like,
+            units: ['K', 'C'],
+            currentValue: 'K'
+        });
+
+    }, [weatherInformation]);
+
     return (
         <div className='container__info'>
-            <div>
-                <p>{data.city},{data.country}</p>
+            <div className='horizontalBlock'>
+                <p>{data.city}, {data.country} - {data.dt}</p>
                 <img src={data.weatherIcon} alt='' />
-                <input type='checkbox' checked={data.isFavorite}
-                    onChange={() => editeFavorite(data.city, data.favoriteIndex)} />
             </div>
-            <p>Temperature: {data.temp}</p>
-            <p>Feels like: {data.feelsLike}</p>
-            <p>Sunrise: {data.sunrise}</p>
-            <p>Weather: {data.weather}</p>
-            <p>Description: {data.weatherDescription}</p>
-            <p>Wind Speed: {data.windSpeed}</p>
-            <p>Wind Gust: {data.windGust}</p>
+            <div className='horizontalBlock settingsBlock'>
+                <div>
+                    <label htmlFor='fvCity'>Favorite city</label>
+                    <input type='checkbox' id='fvCity' checked={data.isFavorite}
+                        onChange={() => eventEditeFavorite(data.city, data.favoriteIndex, setFavoriteСities, favoriteСities)} />
+                </div>
+                <div className='horizontalBlock'>Units:
+                    <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} />
+                </div>
+            </div>
+            <p><span>Temperature:</span> {dataTemp.temp}</p>
+            <p><span>Feels like:</span> {dataTemp.feelsLike}</p>
+            <p><span>Sunrise:</span> {data.sunrise}</p>
+            <p><span>Weather:</span> {data.weather}</p>
+            <p><span>Description:</span> {data.weatherDescription}</p>
+            <p><span>Wind Speed:</span> {data.windSpeed}</p>
+            <p><span>Wind Gust:</span> {data.windGust}</p>
 
         </div>
     );

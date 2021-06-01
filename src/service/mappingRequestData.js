@@ -1,41 +1,51 @@
 const mappingRequestData = (weatherInformation, favoriteСities) => {
 
-    const city = weatherInformation.name;
-    const country = weatherInformation.sys.country;
+    if (weatherInformation !== null) {
 
-    const temp = weatherInformation.main.temp;
-    const feelsLike = weatherInformation.main.feels_like;
+        const city = weatherInformation.name;
+        const country = weatherInformation.sys.country;
 
-    const fullDataSunrise = new Date(weatherInformation.sys.sunrise);
-    const sunrise = `${fullDataSunrise.getHours()} : ${fullDataSunrise.getMinutes()}`;
+        const temp = weatherInformation.main.temp;
+        const feelsLike = weatherInformation.main.feels_like;
 
-    const weather = weatherInformation.weather[0].main;
-    const weatherDescription = weatherInformation.weather[0].description;
-    const weatherIcon = `https://openweathermap.org/img/w/${weatherInformation.weather[0].icon}.png`;
+        const fullDataSunrise = new Date(weatherInformation.sys.sunrise);
+        const sunrise = `${fullDataSunrise.getHours()} : ${fullDataSunrise.getMinutes()}`;
 
-    const windSpeed = weatherInformation.wind.speed;
-    const windGust = weatherInformation.wind.gust;
+        const weather = weatherInformation.weather[0].main;
+        const weatherDescription = weatherInformation.weather[0].description;
+        const weatherIcon = `https://openweathermap.org/img/w/${weatherInformation.weather[0].icon}.png`;
 
-    const favoriteIndex = favoriteСities.findIndex((el) => el.name === weatherInformation.name);
-    const isFavorite = favoriteIndex > -1;
+        const windSpeed = weatherInformation.wind.speed;
+        const windGust = weatherInformation.wind.gust;
 
-    const weatherData = {
+        const favoriteIndex = favoriteСities.findIndex((el) => el.name === weatherInformation.name);
+        const isFavorite = favoriteIndex > -1;
 
-        city: city,
-        country: country,
-        temp: temp,
-        feelsLike: feelsLike,
-        sunrise: sunrise,
-        weather: weather,
-        weatherDescription: weatherDescription,
-        weatherIcon: weatherIcon,
-        windSpeed: windSpeed,
-        windGust: windGust,
-        isFavorite: isFavorite,
-        favoriteIndex: favoriteIndex
+        // const dt = new Date(weatherInformation.dt).toDateString();
+        const dt = new Date().toDateString();
 
-    };
-    return weatherData;
-    
+        const weatherData = {
+
+            city: city,
+            country: country,
+            temp: temp,
+            feelsLike: feelsLike,
+            sunrise: sunrise,
+            weather: weather,
+            weatherDescription: weatherDescription,
+            weatherIcon: weatherIcon,
+            windSpeed: windSpeed,
+            windGust: windGust,
+            isFavorite: isFavorite,
+            favoriteIndex: favoriteIndex,
+            dt: dt
+
+        };
+        return weatherData;
+
+    }
+
+    return null;
+
 };
 export default mappingRequestData;
