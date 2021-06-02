@@ -25,6 +25,7 @@ const FavoriteСities = (props) => {
     return (
         <div className='container__right'>
             <div>Favorite Сities</div>
+            <h6>have not added favorite cities yet</h6>
         </div>
     );
 
