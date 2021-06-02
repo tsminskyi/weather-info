@@ -79,7 +79,7 @@ const WeatherInformation = (props) => {
             </div>
             <p><span>Temperature:</span> {dataTemp.temp}</p>
             <p><span>Feels like:</span> {dataTemp.feelsLike}</p>
-            <p><span>Sunrise:</span> {data.sunrise}</p>
+            <p><span>Sunset:</span> {data.sunset}</p>
             <p><span>Weather:</span> {data.weather}</p>
             <p><span>Description:</span> {data.weatherDescription}</p>
             <p><span>Wind Speed:</span> {data.windSpeed}</p>

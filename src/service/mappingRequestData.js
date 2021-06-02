@@ -8,8 +8,8 @@ const mappingRequestData = (weatherInformation, favoriteСities) => {
         const temp = weatherInformation.main.temp;
         const feelsLike = weatherInformation.main.feels_like;
 
-        const fullDataSunrise = new Date(weatherInformation.sys.sunrise);
-        const sunrise = `${fullDataSunrise.getHours()} : ${fullDataSunrise.getMinutes()}`;
+        const fullDataSunset = new Date(weatherInformation.sys.sunset);
+        const sunset = `${fullDataSunset.getHours()} : ${fullDataSunset.getMinutes()}`;
 
         const weather = weatherInformation.weather[0].main;
         const weatherDescription = weatherInformation.weather[0].description;
@@ -36,7 +36,7 @@ const mappingRequestData = (weatherInformation, favoriteСities) => {
             country: country,
             temp: temp,
             feelsLike: feelsLike,
-            sunrise: sunrise,
+            sunset: sunset,
             weather: weather,
             weatherDescription: weatherDescription,
             weatherIcon: weatherIcon,
