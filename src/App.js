@@ -10,9 +10,11 @@ const App = () => {
   const [weatherInformation, setWeatherInformation] = useState(null);
   const [currentCity, setCurrentCity] = useState(null);
   const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
 
+    setIsLoading(true);
     handleLoadWeather(currentCity).then((respons) => {
 
       if (respons !== null && respons.status === 200) {
@@ -26,10 +28,26 @@ const App = () => {
 
       }
 
-    });
+    }).finally(() => setIsLoading(false));
 
   }, [currentCity]);
 
+  if (isLoading) {
+
+    return (
+
+      <div className='container'>
+        <div className='container__left'>
+          <SearchBlock setCurrentCity={setCurrentCity} />
+          <h1>Loading...</h1>
+        </div>
+        <FavoriteСities favoriteСities={favoriteСities} setCurrentCity={setCurrentCity} />
+
+      </div>
+
+    );
+
+  }
   return (
 
     <div className='container'>

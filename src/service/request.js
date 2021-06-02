@@ -45,7 +45,7 @@ const requestOpenweathermap = async (currentCity, pos) => {
 
 };
 
-const currentPosition = async () => {
+const currentPosition = () => {
 
     return new Promise((resolve) => {
 
@@ -69,13 +69,18 @@ const currentPosition = async () => {
 
 const handleLoadWeather = async (city) => {
 
-    let response = null;
-    await currentPosition().then(async (pos) => {
+    try {
 
-        response = await requestOpenweathermap(city, pos);
+        const curPosition = await currentPosition();
+        const response = await requestOpenweathermap(city, curPosition);
+        return response;
 
-    });
-    return response;
+    } catch (err) {
+
+        console.log(err);
+        return null;
+
+    }
 
 };
 export default handleLoadWeather;

@@ -18,8 +18,14 @@ const mappingRequestData = (weatherInformation, favoriteСities) => {
         const windSpeed = weatherInformation.wind.speed;
         const windGust = weatherInformation.wind.gust;
 
-        const favoriteIndex = favoriteСities.findIndex((el) => el.name === weatherInformation.name);
-        const isFavorite = favoriteIndex > -1;
+        let favoriteIndex = null;
+        let isFavorite = false;
+        if (favoriteСities != null) {
+
+            favoriteIndex = favoriteСities.findIndex((el) => el.name === weatherInformation.name);
+            isFavorite = favoriteIndex > -1;
+
+        }
 
         // const dt = new Date(weatherInformation.dt).toDateString();
         const dt = new Date().toDateString();

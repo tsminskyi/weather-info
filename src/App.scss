@@ -1,15 +1,9 @@
-body {
-    background-image: url("./img/PicsArt_11-07-06.41.09.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 .container {
     display: flex;
     margin: auto;
-    justify-content: space-between;
-    padding: 1%;
+    padding: 10px 0;
     width: 600px;
-    .container__left {
+    &__left {
         display: flex;
         flex-direction: column;
         width: 80%;
@@ -19,6 +13,9 @@ body {
             button {
                 margin: 5px;
             }
+        }
+        h1 {
+            color: rgb(214, 214, 211);
         }
 
         .container__info {
@@ -40,7 +37,7 @@ body {
             }
         }
     }
-    .container__right {
+    &__right {
         display: flex;
         flex-direction: column;
         width: 20%;
@@ -49,6 +46,27 @@ body {
         padding: 5px;
         button {
             margin: 5px 0;
+        }
+    }
+
+    @media (max-width: 610px) {
+        width: 100%;
+        margin: 0px;
+    }
+    @media (max-width: 410px) {
+        flex-direction: column;
+        &__left {
+            width: 98%;
+            padding: 1%;
+        }
+        &__right {
+            width: 98%;
+            padding: 1%;
+            :first-child {
+                background-color: rgba(168, 165, 165, 0.582);
+                text-align: center;
+                font-size: 20px;
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ const UnitsBlock = (props) => {
 
     };
     return (
-        <select value={dataTemp.currentValue} onChange={eventChangeUnits}>
+        <select className='' value={dataTemp.currentValue} onChange={eventChangeUnits}>
             <option value={dataTemp.units[0]}>K</option>
             <option value={dataTemp.units[1]}>C</option>
         </select>

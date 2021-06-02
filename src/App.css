@@ -1,18 +1,11 @@
-body {
-  background-image: url("./img/PicsArt_11-07-06.41.09.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .container {
   display: flex;
   margin: auto;
-  justify-content: space-between;
-  padding: 1%;
+  padding: 10px 0;
   width: 600px;
 }
 
-.container .container__left {
+.container__left {
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -20,33 +13,37 @@ body {
   padding: 5px;
 }
 
-.container .container__left .container__search button {
+.container__left .container__search button {
   margin: 5px;
 }
 
-.container .container__left .container__info {
+.container__left h1 {
+  color: #d6d6d3;
+}
+
+.container__left .container__info {
   font-weight: bold;
   color: #d6d6d3;
   display: flex;
   flex-direction: column;
 }
 
-.container .container__left .container__info .horizontalBlock {
+.container__left .container__info .horizontalBlock {
   display: flex;
   align-items: center;
 }
 
-.container .container__left .container__info .settingsBlock {
+.container__left .container__info .settingsBlock {
   background-color: rgba(168, 165, 165, 0.582);
   justify-content: space-evenly;
 }
 
-.container .container__left .container__info span {
+.container__left .container__info span {
   padding: 0 20px 0 0;
   color: darkgrey;
 }
 
-.container .container__right {
+.container__right {
   display: flex;
   flex-direction: column;
   width: 20%;
@@ -55,6 +52,32 @@ body {
   padding: 5px;
 }
 
-.container .container__right button {
+.container__right button {
   margin: 5px 0;
+}
+
+@media (max-width: 610px) {
+  .container {
+    width: 100%;
+    margin: 0px;
+  }
+}
+
+@media (max-width: 410px) {
+  .container {
+    flex-direction: column;
+  }
+  .container__left {
+    width: 98%;
+    padding: 1%;
+  }
+  .container__right {
+    width: 98%;
+    padding: 1%;
+  }
+  .container__right :first-child {
+    background-color: rgba(168, 165, 165, 0.582);
+    text-align: center;
+    font-size: 20px;
+  }
 }
