@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import mappingRequestData from '../service/mappingRequestData';
 import eventEditeFavorite from '../service/eventEditeFavorite';
-// import eventChangeUnits from '../service/eventChangeUnits';
 import UnitsBlock from './UnitsBlock';
 
 const WeatherInformation = (props) => {
@@ -40,6 +39,17 @@ const WeatherInformation = (props) => {
         currentValue: 'K'
     });
     const data = mappingRequestData(weatherInformation, favoriteСities);
+
+    const handleEditeFavoriteCity = async () => {
+
+        await eventEditeFavorite(data.city, data.favoriteIndex, favoriteСities)
+            .then((newList) => {
+
+                setFavoriteСities(newList);
+
+            });
+
+    };
     useEffect(() => {
 
         setDataTemp({
@@ -61,7 +71,7 @@ const WeatherInformation = (props) => {
                 <div>
                     <label htmlFor='fvCity'>Favorite city</label>
                     <input type='checkbox' id='fvCity' checked={data.isFavorite}
-                        onChange={() => eventEditeFavorite(data.city, data.favoriteIndex, setFavoriteСities, favoriteСities)} />
+                        onChange={handleEditeFavoriteCity} />
                 </div>
                 <div className='horizontalBlock'>Units:
                     <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} />

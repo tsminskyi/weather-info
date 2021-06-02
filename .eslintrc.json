@@ -60,11 +60,8 @@
             "after-props"
         ],
         "arrow-body-style": [
-            "error",
-            "as-needed",
-            {
-                "requireReturnForObjectLiteral": true
-            }
+            0,
+            "as-needed"
         ],
         "comma-dangle": [
             "error",

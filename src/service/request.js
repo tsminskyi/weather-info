@@ -1,55 +1,81 @@
 import axios from 'axios';
 
-const requestOpenweathermap = (setWeatherInformation, setCurrentCity, currentCity) => {
+const requestOpenweathermap = async (currentCity, pos) => {
 
-    const apikey = '5e8f83d77ff6cdbe5f0c8f33ad9ce665';
-    const baseURL = 'https://api.openweathermap.org/data/2.5/weather';
-
-    if (currentCity == null) {
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-
-                const currentPosition = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-
-                axios.get(`${baseURL}?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}&appid=${apikey}`)
-                    .then((respons) => {
-
-                        setWeatherInformation(respons.data);
-                        setCurrentCity(respons.data.name);
-
-                    });
-
-            }
-
-        );
-
-    }
-
-    if (currentCity == null) {
-
-        const storage = JSON.parse(localStorage.getItem('weather-info'));
-        if (storage !== null && storage.length !== 0) {
-
-            setCurrentCity(storage[0].name);
-
+    const axiosMain = axios.create({
+        baseURL: 'https://api.openweathermap.org/data/2.5/',
+        params: {
+            appid: process.env.REACT_APP_APIKEY_OPENWEATHERMAP
         }
+    });
+    let result = null;
+    let city = currentCity;
+    if (pos !== null) {
 
-    }
-    if (currentCity !== null) {
+        result = await axiosMain
+            .get(`weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+            .catch((error) => {
 
-        axios.get(`${baseURL}?q=${currentCity}&appid=${apikey}`)
-            .then((respons) => {
-
-                setWeatherInformation(respons.data);
-
-            }).catch((error) => {
-
-                setWeatherInformation(error.response.data);
+                return error.response.data;
 
             });
 
     }
 
+    if (city == null && pos == null) {
+
+        const storage = JSON.parse(localStorage.getItem('weather-info'));
+        if (storage !== null && storage.length !== 0) {
+
+            city = storage[0].name;
+
+        }
+
+    }
+    if (city !== null) {
+
+        result = await axiosMain.get(`weather?q=${city}`).catch((error) => {
+
+            return error.response.data;
+
+        });
+
+    }
+    return result;
+
 };
-export default requestOpenweathermap;
+
+const currentPosition = async () => {
+
+    return new Promise((resolve) => {
+
+        if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition((pos) => {
+
+                resolve(pos);
+
+            }, () => {
+
+                resolve(null);
+
+            });
+
+        } else resolve(null);
+
+    });
+
+};
+
+const handleLoadWeather = async (city) => {
+
+    let response = null;
+    await currentPosition().then(async (pos) => {
+
+        response = await requestOpenweathermap(city, pos);
+
+    });
+    return response;
+
+};
+export default handleLoadWeather;

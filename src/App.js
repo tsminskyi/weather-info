@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SearchBlock from './components/SearchBlock';
 import WeatherInformation from './components/WeatherInformation';
 import FavoriteСities from './components/FavoriteСities';
-import requestOpenweathermap from './service/request';
+import handleLoadWeather from './service/request';
 import './App.css';
 
 const App = () => {
@@ -10,11 +10,25 @@ const App = () => {
   const [weatherInformation, setWeatherInformation] = useState(null);
   const [currentCity, setCurrentCity] = useState(null);
   const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
+
   useEffect(() => {
 
-    requestOpenweathermap(setWeatherInformation, setCurrentCity, currentCity);
+    handleLoadWeather(currentCity).then((respons) => {
 
-  }, [currentCity, favoriteСities]);
+      if (respons !== null && respons.status === 200) {
+
+        setWeatherInformation(respons.data);
+        setCurrentCity(respons.data.name);
+
+      } else {
+
+        setWeatherInformation(respons);
+
+      }
+
+    });
+
+  }, [currentCity]);
 
   return (
 

@@ -1,29 +1,28 @@
-const eventEditeFavorite = (value, favoriteIndex, setFavoriteСities, favoriteСities) => {
+const eventEditeFavorite = async (value, favoriteIndex, favoriteСities) => {
 
+    let newList = null;
     if (favoriteСities != null && favoriteСities.length > 0) {
 
         if (favoriteIndex >= 0) {
 
-            const newList = favoriteСities.filter((el) => el.name !== value);
-            setFavoriteСities(newList);
+            newList = await favoriteСities.filter((el) => el.name !== value);
             localStorage.setItem('weather-info', JSON.stringify(newList));
 
         } else {
 
-            const newList = favoriteСities.slice();
-            newList.push({ name: value });
-            setFavoriteСities(newList);
+            newList = favoriteСities.slice();
+            await newList.push({ name: value });
             localStorage.setItem('weather-info', JSON.stringify(newList));
 
         }
 
     } else {
 
-        const newList = new Array({ name: value });
-        setFavoriteСities(newList);
+        newList = await new Array({ name: value });
         localStorage.setItem('weather-info', JSON.stringify(newList));
 
     }
+    return newList;
 
 };
 export default eventEditeFavorite;
