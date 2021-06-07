@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SearchBlock from './components/SearchBlock';
 import WeatherInformation from './components/WeatherInformation';
 import FavoriteСities from './components/FavoriteСities';
-import handleLoadWeather from './service/request';
+import { handleLoadWeatherByCity, handleLoadWeatherByLocation } from './service/request';
 import './App.css';
 
 const App = () => {
@@ -12,21 +12,38 @@ const App = () => {
   const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
   const [isLoading, setIsLoading] = useState(false);
 
+  const changeState = (respons) => {
+
+    if (respons !== null && respons.status === 200) {
+
+      setWeatherInformation(respons.data);
+      setCurrentCity(respons.data.name);
+
+    } else {
+
+      setWeatherInformation(respons);
+
+    }
+
+  };
+
   useEffect(() => {
 
     setIsLoading(true);
-    handleLoadWeather(currentCity).then((respons) => {
+    handleLoadWeatherByLocation().then((respons) => {
 
-      if (respons !== null && respons.status === 200) {
+      changeState(respons);
 
-        setWeatherInformation(respons.data);
-        setCurrentCity(respons.data.name);
+    }).finally(() => setIsLoading(false));
 
-      } else {
+  }, []);
 
-        setWeatherInformation(respons);
+  useEffect(() => {
 
-      }
+    setIsLoading(true);
+    handleLoadWeatherByCity(currentCity).then((respons) => {
+
+      changeState(respons);
 
     }).finally(() => setIsLoading(false));
 

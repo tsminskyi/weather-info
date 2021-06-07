@@ -1,28 +1,18 @@
 import axios from 'axios';
 
-const requestOpenweathermap = async (currentCity, pos) => {
+const axiosMain = axios.create({
+    baseURL: 'https://api.openweathermap.org/data/2.5/',
+    params: {
+        appid: process.env.REACT_APP_APIKEY_OPENWEATHERMAP
+    }
+});
 
-    const axiosMain = axios.create({
-        baseURL: 'https://api.openweathermap.org/data/2.5/',
-        params: {
-            appid: process.env.REACT_APP_APIKEY_OPENWEATHERMAP
-        }
-    });
+const requestByCity = async (currentCity) => {
+
     let result = null;
     let city = currentCity;
-    if (pos !== null) {
 
-        result = await axiosMain
-            .get(`weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
-            .catch((error) => {
-
-                return error.response.data;
-
-            });
-
-    }
-
-    if (city == null && pos == null) {
+    if (city == null) {
 
         const storage = JSON.parse(localStorage.getItem('weather-info'));
         if (storage !== null && storage.length !== 0) {
@@ -67,13 +57,25 @@ const currentPosition = () => {
 
 };
 
-const handleLoadWeather = async (city) => {
+export const handleLoadWeatherByLocation = async () => {
 
     try {
 
         const curPosition = await currentPosition();
-        const response = await requestOpenweathermap(city, curPosition);
-        return response;
+
+        if (curPosition !== null) {
+
+            const result = await axiosMain
+                .get(`weather?lat=${curPosition.coords.latitude}&lon=${curPosition.coords.longitude}`)
+                .catch((error) => {
+
+                    return error.response.data;
+
+                });
+            return result;
+
+        }
+        return null;
 
     } catch (err) {
 
@@ -83,4 +85,18 @@ const handleLoadWeather = async (city) => {
     }
 
 };
-export default handleLoadWeather;
+
+export const handleLoadWeatherByCity = async (city) => {
+
+    try {
+
+        return await requestByCity(city);
+
+    } catch (err) {
+
+        console.log(err);
+        return null;
+
+    }
+
+};
