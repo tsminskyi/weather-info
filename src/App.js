@@ -11,6 +11,7 @@ const App = () => {
   const [currentCity, setCurrentCity] = useState(null);
   const [favoriteСities, setFavoriteСities] = useState(JSON.parse(localStorage.getItem('weather-info')));
   const [isLoading, setIsLoading] = useState(false);
+  const [isFirtsLoading, setFirtsLoading] = useState(true);
 
   const changeState = (respons) => {
 
@@ -30,22 +31,36 @@ const App = () => {
   useEffect(() => {
 
     setIsLoading(true);
-    handleLoadWeatherByLocation().then((respons) => {
+    if (isFirtsLoading) {
 
-      changeState(respons);
+      handleLoadWeatherByLocation().then((respons) => {
 
-    }).finally(() => setIsLoading(false));
+        if (respons == null) {
 
-  }, []);
+          handleLoadWeatherByCity(currentCity).then((value) => {
 
-  useEffect(() => {
+            changeState(value);
 
-    setIsLoading(true);
-    handleLoadWeatherByCity(currentCity).then((respons) => {
+          });
 
-      changeState(respons);
+        } else changeState(respons);
 
-    }).finally(() => setIsLoading(false));
+      }).finally(() => {
+
+        setIsLoading(false);
+        setFirtsLoading(false);
+
+      });
+
+    } else {
+
+      handleLoadWeatherByCity(currentCity).then((respons) => {
+
+        changeState(respons);
+
+      }).finally(() => setIsLoading(false));
+
+    }
 
   }, [currentCity]);
 
