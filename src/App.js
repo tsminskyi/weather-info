@@ -64,28 +64,12 @@ const App = () => {
 
   }, [currentCity]);
 
-  if (isLoading) {
-
-    return (
-
-      <div className='container'>
-        <div className='container__left'>
-          <SearchBlock setCurrentCity={setCurrentCity} />
-          <h1>Loading...</h1>
-        </div>
-        <FavoriteСities favoriteСities={favoriteСities} setCurrentCity={setCurrentCity} />
-
-      </div>
-
-    );
-
-  }
   return (
 
     <div className='container'>
       <div className='container__left'>
         <SearchBlock setCurrentCity={setCurrentCity} />
-        <WeatherInformation weatherInformation={weatherInformation} setFavoriteСities={setFavoriteСities}
+        <WeatherInformation isLoading={isLoading} weatherInformation={weatherInformation} setFavoriteСities={setFavoriteСities}
           favoriteСities={favoriteСities} />
       </div>
       <FavoriteСities favoriteСities={favoriteСities} setCurrentCity={setCurrentCity} />

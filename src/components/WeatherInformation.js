@@ -5,7 +5,18 @@ import UnitsBlock from './UnitsBlock';
 
 const WeatherInformation = (props) => {
 
-    const { weatherInformation, favoriteСities, setFavoriteСities } = props;
+    const {
+        weatherInformation, favoriteСities, setFavoriteСities, isLoading
+    } = props;
+    const units = ['K', 'C'];
+
+    if (isLoading) {
+
+        return (
+            <h1>Loading...</h1>
+        );
+
+    }
     if (weatherInformation == null) {
 
         return (
@@ -55,7 +66,6 @@ const WeatherInformation = (props) => {
         setDataTemp({
             temp: weatherInformation.main.temp,
             feelsLike: weatherInformation.main.feels_like,
-            units: ['K', 'C'],
             currentValue: 'K'
         });
 
@@ -74,7 +84,7 @@ const WeatherInformation = (props) => {
                         onChange={handleEditeFavoriteCity} />
                 </div>
                 <div className='horizontalBlock'>Units:
-                    <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} />
+                    <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} units={units} />
                 </div>
             </div>
             <p><span>Temperature:</span> {dataTemp.temp}</p>
