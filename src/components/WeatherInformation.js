@@ -8,8 +8,12 @@ const WeatherInformation = (props) => {
     const {
         weatherInformation, favoriteСities, setFavoriteСities, isLoading
     } = props;
-    const units = ['K', 'C'];
-
+    const UNIT_KELVIN = 'K';
+    const UNIT_CELSIUS = 'C';
+    const mapUnitTitles = {
+        Kelvin: UNIT_KELVIN,
+        Celsius: UNIT_CELSIUS
+    };
     if (isLoading) {
 
         return (
@@ -46,8 +50,7 @@ const WeatherInformation = (props) => {
     const [dataTemp, setDataTemp] = useState({
         temp: weatherInformation.main.temp,
         feelsLike: weatherInformation.main.feels_like,
-        units: ['K', 'C'],
-        currentValue: 'K'
+        currentValue: mapUnitTitles.Kelvin
     });
     const data = mappingRequestData(weatherInformation, favoriteСities);
 
@@ -66,7 +69,7 @@ const WeatherInformation = (props) => {
         setDataTemp({
             temp: weatherInformation.main.temp,
             feelsLike: weatherInformation.main.feels_like,
-            currentValue: 'K'
+            currentValue: mapUnitTitles.Kelvin
         });
 
     }, [weatherInformation]);
@@ -84,7 +87,7 @@ const WeatherInformation = (props) => {
                         onChange={handleEditeFavoriteCity} />
                 </div>
                 <div className='horizontalBlock'>Units:
-                    <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} units={units} />
+                    <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} units={mapUnitTitles} />
                 </div>
             </div>
             <p><span>Temperature:</span> {dataTemp.temp}</p>

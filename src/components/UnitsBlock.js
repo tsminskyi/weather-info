@@ -8,14 +8,14 @@ const UnitsBlock = (props) => {
 
         const differenceKelvinToCelsius = 273.15;
         const newObj = { ...dataTemp };
-        if (event.target.value === units[1]) {
+        if (event.target.value === units.Celsius) {
 
             newObj.temp = (Number.parseFloat(newObj.temp) - differenceKelvinToCelsius).toFixed(2);
             newObj.feelsLike = (Number.parseFloat(newObj.feelsLike) - differenceKelvinToCelsius).toFixed(2);
             newObj.currentValue = event.target.value;
 
         }
-        if (event.target.value === units[0]) {
+        if (event.target.value === units.Kelvin) {
 
             newObj.temp = (Number.parseFloat(newObj.temp) + differenceKelvinToCelsius).toFixed(2);
             newObj.feelsLike = (Number.parseFloat(newObj.feelsLike) + differenceKelvinToCelsius).toFixed(2);
@@ -26,9 +26,9 @@ const UnitsBlock = (props) => {
 
     };
     return (
-        <select className='' value={dataTemp.currentValue} onChange={eventChangeUnits}>
-            <option value={units[0]}>{units[0]}</option>
-            <option value={units[1]}>{units[1]}</option>
+        <select value={dataTemp.currentValue} onChange={eventChangeUnits}>
+            <option value={units.Kelvin}>{units.Kelvin}</option>
+            <option value={units.Celsius}>{units.Celsius}</option>
         </select>
     );
 
