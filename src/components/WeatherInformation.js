@@ -2,18 +2,39 @@ import React, { useState, useEffect } from 'react';
 import mappingRequestData from '../service/mappingRequestData';
 import eventEditeFavorite from '../service/eventEditeFavorite';
 import UnitsBlock from './UnitsBlock';
+import * as constants from '../service/constants';
 
 const WeatherInformation = (props) => {
 
     const {
         weatherInformation, favoriteСities, setFavoriteСities, isLoading
     } = props;
-    const UNIT_KELVIN = 'K';
-    const UNIT_CELSIUS = 'C';
+
     const mapUnitTitles = {
-        Kelvin: UNIT_KELVIN,
-        Celsius: UNIT_CELSIUS
+        Kelvin: constants.UNIT_KELVIN,
+        Celsius: constants.UNIT_CELSIUS
     };
+    
+    const [dataTemp, setDataTemp] = useState({
+        temp: null,
+        feelsLike: null,
+        currentValue: ''
+    });
+
+    useEffect(() => {
+
+        if (weatherInformation != null) {
+
+            setDataTemp({
+                temp: weatherInformation.main.temp,
+                feelsLike: weatherInformation.main.feels_like,
+                currentValue: mapUnitTitles.Kelvin
+            });
+
+        }
+
+    }, [weatherInformation]);
+
     if (isLoading) {
 
         return (
@@ -47,32 +68,14 @@ const WeatherInformation = (props) => {
 
     }
 
-    const [dataTemp, setDataTemp] = useState({
-        temp: weatherInformation.main.temp,
-        feelsLike: weatherInformation.main.feels_like,
-        currentValue: mapUnitTitles.Kelvin
-    });
     const data = mappingRequestData(weatherInformation, favoriteСities);
 
-    const handleEditeFavoriteCity = async () => {
+    const handleEditFavoriteCity = async () => {
 
-        await eventEditeFavorite(data.city, data.favoriteIndex, favoriteСities)
-            .then((newList) => {
-
-                setFavoriteСities(newList);
-
-            });
+        const favoriteCityList = await eventEditeFavorite(data.city, data.favoriteIndex, favoriteСities);
+        setFavoriteСities(favoriteCityList);
 
     };
-    useEffect(() => {
-
-        setDataTemp({
-            temp: weatherInformation.main.temp,
-            feelsLike: weatherInformation.main.feels_like,
-            currentValue: mapUnitTitles.Kelvin
-        });
-
-    }, [weatherInformation]);
 
     return (
         <div className='container__info'>
@@ -84,7 +87,7 @@ const WeatherInformation = (props) => {
                 <div>
                     <label htmlFor='fvCity'>Favorite city</label>
                     <input type='checkbox' id='fvCity' checked={data.isFavorite}
-                        onChange={handleEditeFavoriteCity} />
+                        onChange={handleEditFavoriteCity} />
                 </div>
                 <div className='horizontalBlock'>Units:
                     <UnitsBlock setDataTemp={setDataTemp} dataTemp={dataTemp} units={mapUnitTitles} />
