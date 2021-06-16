@@ -3,6 +3,9 @@ import mappingRequestData from '../service/mappingRequestData';
 import eventEditeFavorite from '../service/eventEditeFavorite';
 import UnitsBlock from './UnitsBlock';
 import * as constants from '../service/constants';
+import Information404 from './Information404';
+import LoadingBLock from './LoadingBLock';
+import InformationErrorLocation from './InformationErrorLocation';
 
 const WeatherInformation = (props) => {
 
@@ -14,7 +17,7 @@ const WeatherInformation = (props) => {
         Kelvin: constants.UNIT_KELVIN,
         Celsius: constants.UNIT_CELSIUS
     };
-    
+
     const [dataTemp, setDataTemp] = useState({
         temp: null,
         feelsLike: null,
@@ -23,7 +26,7 @@ const WeatherInformation = (props) => {
 
     useEffect(() => {
 
-        if (weatherInformation != null) {
+        if (weatherInformation != null && weatherInformation.cod === 200) {
 
             setDataTemp({
                 temp: weatherInformation.main.temp,
@@ -35,39 +38,6 @@ const WeatherInformation = (props) => {
 
     }, [weatherInformation]);
 
-    if (isLoading) {
-
-        return (
-            <h1>Loading...</h1>
-        );
-
-    }
-    if (weatherInformation == null) {
-
-        return (
-            <div className='container__info'>
-                <h1>We don`t know where you are.Please enter the city name in the search bar.</h1>
-                <h4>Possible reasons:</h4>
-                <h5>You have chosen not to provide your location data</h5>
-                <h5>There is a network problem or the location service cannot
-                be contacted for any other reason.
-                </h5>
-                <h5>Failed to determine the location within the specified time.</h5>
-            </div>
-        );
-
-    }
-    if (weatherInformation.cod === '404') {
-
-        return (
-            <div className='container__info'>
-                <h1>{weatherInformation.cod}</h1>
-                <p>{weatherInformation.message}</p>
-            </div>
-        );
-
-    }
-
     const data = mappingRequestData(weatherInformation, favoriteСities);
 
     const handleEditFavoriteCity = async () => {
@@ -77,6 +47,21 @@ const WeatherInformation = (props) => {
 
     };
 
+    if (isLoading) {
+
+        return <LoadingBLock />;
+
+    }
+    if (weatherInformation == null) {
+
+        return <InformationErrorLocation />;
+
+    }
+    if (weatherInformation.cod === '404') {
+
+        return <Information404 weatherInformation={weatherInformation} />;
+
+    }
     return (
         <div className='container__info'>
             <div className='horizontalBlock'>

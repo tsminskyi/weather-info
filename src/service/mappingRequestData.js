@@ -1,6 +1,6 @@
 const mappingRequestData = (weatherInformation, favoriteСities) => {
 
-    if (weatherInformation !== null) {
+    if (weatherInformation !== null && weatherInformation.cod === 200) {
 
         const city = weatherInformation.name;
         const country = weatherInformation.sys.country;
